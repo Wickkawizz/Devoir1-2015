@@ -58,6 +58,8 @@ public class LSystem extends AbstractLSystem {
         JSONArray alphabet = input.getJSONArray("alphabet");
         
         JSONObject rules = input.getJSONObject("rules");
+        JSONObject actions = input.getJSONObject("actions");
+        JSONObject parameters = input.getJSONObject("parameters");
         
         String axiom = input.getString("axiom");
         S.setAxiom(axiom);
@@ -81,6 +83,14 @@ public class LSystem extends AbstractLSystem {
                 // Add every rules
                 S.addRule(new Symbol(symbol.charAt(0)), ruleArray.getString(j));
             }
+        }
+
+
+        // Actions
+        JSONArray actionsNames = actions.names();
+        for (int i = 0; i < actionsNames.length(); i++) {
+            Symbol currentAction = new Symbol(actionsNames.get(i).toString().charAt(0));
+            S.actions.putIfAbsent(currentAction, (String) actions.get(currentAction.toString()));
         }
         
         System.out.println("Fin lecture fichier!");
@@ -140,6 +150,18 @@ public class LSystem extends AbstractLSystem {
 
     @Override
     public void tell(ITurtle turtle, Symbol sym) {
+    	/*
+    	for (Map.Entry<Symbol, String> entry : this.actions.entrySet()) {
+			System.out.println(entry.getKey());
+			System.out.println(entry.getValue());
+            System.out.println(entry.getKey().toString().equals(sym.toString()));
+            System.out.println(entry.getKey().toString() + " : " + sym.toString());
+		}
+    	var b = this.actions.containsKey(sym);
+    	var temp = this.actions.containsValue(sym);
+    	var t = this.actions.get(sym);
+    	System.out.println("t = : " + t.toString());
+    	*/
         switch(actions.get(sym)){
             case("draw"): 
                 turtle.draw();
@@ -175,12 +197,45 @@ public class LSystem extends AbstractLSystem {
     }
 
     @Override
-    public Rectangle2D tell(ITurtle turtle, Symbol.Seq seq, int rounds) {
+    public Rectangle2D tell(ITurtle turtle, Symbol.Seq seq, int n) {        
+        if(n == 0)
+            for (Symbol sym : seq)
+                tell(turtle, sym);
+        else{
+            // Rewrite?
+            //@SuppressWarnings("unchecked")
+            List<Symbol> symbols = (List<Symbol>) seq;
+
+            for (Symbol sym : seq){
+                // On a "AB"
+                int index = symbols.indexOf(sym);
+                symbols.remove(sym);// Remove "A"
+                //Rewrite "A" into "AA"   
+                symbols.addAll(index, (List<Symbol>) rewrite(sym));
+            }
+
+            tell(turtle, seq, n - 1);
+        }
+
+
+        seq = applyRules(seq, n);
+        for (Symbol sym : seq) {
+            tell(turtle, sym);
+        }
+        //turtle.getPosition().
+        return new Rectangle2D.Double(
+            0, 
+            0, 
+            turtle.getPosition().getX(), 
+            turtle.getPosition().getY()
+        );
+        /*
         List<Symbol> symbols = (List) seq;
         for (Symbol symbol : symbols) {
             List<Symbol> t = (List) rewrite(symbol);
         }
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        */
     }
     
 }
