@@ -28,6 +28,7 @@ public class LSystem extends AbstractLSystem {
     /**
      * constructeur vide monte un système avec alphabet vide et sans règles
      */
+    ITurtle schildkrote;
     Map<String, Symbol> alphabet; // Dictionary
     Map<Symbol, List<Symbol>> rules;
     Map<Symbol, String> actions;
@@ -39,7 +40,16 @@ public class LSystem extends AbstractLSystem {
         rules = new HashMap<Symbol, List<Symbol>>();
         actions = new HashMap<Symbol, String>();
         axiom = new ArrayList<Symbol>();
+        schildkrote = new Turtle();
     }
+
+    public LSystem(ITurtle schildkrote) {
+        alphabet = new HashMap<String, Symbol>();
+        rules = new HashMap<Symbol, List<Symbol>>();
+        this.schildkrote = schildkrote;
+        axiom = new ArrayList<Symbol>();
+    }
+    
     
     // Maybe create another class for it
     public static void readJSONFile(String file, LSystem S, Turtle T) throws java.io.IOException {
