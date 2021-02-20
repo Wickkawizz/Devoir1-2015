@@ -6,15 +6,18 @@
 package projet1.pkg2015;
 
 import projet1.pkg2015.Interface.ITurtle;
+
 import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Stack;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.shape.Line;
 
 /**
  *
  * @author WickkaWizz
+ * @author Arkapin£
  */
 public class Turtle implements ITurtle{
 
@@ -32,6 +35,10 @@ public class Turtle implements ITurtle{
         this.angle_deg = 0.00;
         pos = new Point2D.Double(0.00, 0.00);
         //pos.setLocation(0.00, 0.00);
+        
+        // Temporary stuff for testing
+        Canvas canvas = new Canvas(300, 250);
+        gc = canvas.getGraphicsContext2D();
     }
 
     public Turtle(double step, double delta, Point2D pos, double angle_deg, GraphicsContext board) {
@@ -39,6 +46,10 @@ public class Turtle implements ITurtle{
         stack = new Stack<>();
         init(pos, angle_deg);
         setDrawingBoard(board);
+
+        // Temporary stuff for testing
+        Canvas canvas = new Canvas(300, 250);
+        gc = canvas.getGraphicsContext2D();
     }
     
     // Move with drawing
@@ -85,8 +96,8 @@ public class Turtle implements ITurtle{
 
     @Override
     public void stay() {
-        System.out.print("Let the Turtle R E L A X");
-        System.out.print("(You should take a break too)");
+        System.out.println("Let the Turtle R E L A X");
+        System.out.println("(You should take a break too)");
     }
 
     @Override
