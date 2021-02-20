@@ -29,6 +29,19 @@ public class Symbol
     {
         return Character.toString(value);
     }
+
+    // Needed to make HashMap functions work
+    @Override
+    public int hashCode(){
+        return value; // implicit char to int conversion
+    }
+    @Override
+    public boolean equals(Object s){
+        if(s == null)
+            return false;
+        else
+            return s.toString().equals(this.toString());
+    }
     
     /**
      * Common interface to a string of symbols. 
