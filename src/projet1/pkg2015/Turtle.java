@@ -9,6 +9,8 @@ import projet1.pkg2015.Interface.ITurtle;
 import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Stack;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.Line;
 
 /**
  *
@@ -21,6 +23,7 @@ public class Turtle implements ITurtle{
     Point2D pos; // Turtle position
     double angle_deg; // Angle in degrees (90=up, 0=right)
     Stack<Double> stack; // To save the turtle state
+    GraphicsContext gc;
     
     public Turtle() {
         stack = new Stack<>();
@@ -30,20 +33,22 @@ public class Turtle implements ITurtle{
         pos.setLocation(0.00, 0.00);
     }
 
-    public Turtle(double step, double delta, Point2D pos, double angle_deg) {
-        this.step = step;
-        this.delta = delta;
-        this.pos = pos;
-        this.angle_deg = angle_deg;
+    public Turtle(double step, double delta, Point2D pos, double angle_deg, GraphicsContext board) {
+        setUnits(step, delta);
         stack = new Stack<>();
+        init(pos, angle_deg);
+        setDrawingBoard(board);
     }
     
     // Move with drawing
-    // TODO: Implement the drawing portion
     @Override
     public void draw() {
-        
-        pos.setLocation((pos.getX() + step) * Math.cos(delta),(pos.getY() + step) * Math.sin(delta));
+        double x1 = pos.getX();
+        double y1 = pos.getY();
+        move();// Possibly the reference won't get updated and will need to be stored in a seperate variable.
+        double x2 = pos.getX();
+        double y2 = pos.getY();
+        gc.strokeLine(x1, y1, x2, y2);
     }
 
     // Move without drawing
@@ -106,4 +111,7 @@ public class Turtle implements ITurtle{
         this.delta = delta;
     }
     
+    public void setDrawingBoard(GraphicsContext board){
+        this.gc = board;
+    }
 }
