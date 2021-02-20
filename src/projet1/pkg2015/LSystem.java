@@ -7,7 +7,10 @@ package projet1.pkg2015;
 
 import projet1.pkg2015.Interface.AbstractLSystem;
 import projet1.pkg2015.Interface.ITurtle;
+import projet1.pkg2015.Symbol.Seq;
+
 import java.awt.geom.Rectangle2D;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -26,11 +29,16 @@ public class LSystem extends AbstractLSystem {
      * constructeur vide monte un système avec alphabet vide et sans règles
      */
     Map<String, Symbol> alphabet; // Dictionary
-    Map<Symbol, List<Symbol.Seq>>  rules;
+    Map<Symbol, List<Symbol>> rules;
+    Map<Symbol, String> actions;
+    List<Symbol> axiom;
     
     
     public LSystem() {
         alphabet = new HashMap<String, Symbol>();
+        rules = new HashMap<Symbol, List<Symbol>>();
+        actions = new HashMap<Symbol, String>();
+        axiom = new ArrayList<Symbol>();
     }
     
     // Maybe create another class for it
@@ -64,23 +72,6 @@ public class LSystem extends AbstractLSystem {
             }
         }
     }
-    
-    /* méthodes d'initialisation de système */
-    
-    //public Symbol addSymbol(char sym) {...}
-    //public void addRule(Symbol sym, String expansion) {...}
-    //public void setAction(Symbol sym, String action) {...}
-    //public void setAxiom(String str){...}
-    
-    /* accès aux règles et exécution */
-    //public Symbol.Seq getAxiom(){ ...}
-    //public Symbol.Seq rewrite(Symbol sym) {...}
-    //public void tell(Turtle turtle, Symbol sym) {...}
- 
-    /* opérations avancées */
-    //public Symbol.Seq applyRules(Symbol.Seq seq, int n) {...}
-    /* retourne BoundingBox pour le dessin */
-    //public Rectangle2D tell(Turtle turtle, Symbol.Seq seq, int n){ ...}
 
     @Override
     public Symbol addSymbol(char sym) {
@@ -91,32 +82,68 @@ public class LSystem extends AbstractLSystem {
 
     @Override
     public void addRule(Symbol sym, String expansion) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Symbol> sequence = rules.get(sym);
+        if(sequence != null){
+            for (char c : expansion.toCharArray()) {
+                sequence.add(new Symbol(c));                
+            }
+        }
+        // if the rule doesnt exist yet, add it
+        else{
+            var temp = new ArrayList<Symbol>();
+            for (char c : expansion.toCharArray()) {
+                temp.add(new Symbol(c));                
+            }
+            rules.putIfAbsent(sym, temp);
+        }
     }
 
     @Override
     public void setAction(Symbol sym, String action) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        actions.putIfAbsent(sym, action);
     }
 
     @Override
     public void setAxiom(String str) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (char c : str.toCharArray())
+            axiom.add(new Symbol(c));
     }
 
     @Override
     public Symbol.Seq getAxiom() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (Symbol.Seq) axiom;
     }
 
     @Override
     public Symbol.Seq rewrite(Symbol sym) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Find rules
+        List<Symbol> rulesList = rules.get(sym);
+        int numberOfRules = rulesList.size();
+        
+        // Randomly select a rule and return it
+        int randomNum = ThreadLocalRandom.current().nextInt(0, numberOfRules);
+        return (Symbol.Seq) rulesList.get(randomNum);
     }
 
     @Override
     public void tell(ITurtle turtle, Symbol sym) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        switch(actions.get(sym)){
+            case("draw"): 
+                turtle.draw();
+                break;
+            case("push"):
+                turtle.push();
+                break;
+            case("pop"):
+                turtle.pop();
+                break;
+            case("turnL"):
+                turtle.turnL();
+                break;
+            case("turnR"):
+                turtle.turnR();
+                break;
+        }
     }
 
     @Override
