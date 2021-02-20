@@ -22,6 +22,7 @@ package projet1.pkg2015.Interface;
  */
 
 import java.awt.geom.Point2D;
+import javafx.scene.shape.Line;
 /**
  * Turtle graphics interface. The turtle state is defined as its 
  * location on the plane and the orientation of its nose. 

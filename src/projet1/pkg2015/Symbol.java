@@ -15,7 +15,7 @@ package projet1.pkg2015;
  * 
  * @author Mikl&oacute;s Cs&#369;r&ouml;s
  */
-public class Symbol 
+public class Symbol
 {
     private final char value;
     

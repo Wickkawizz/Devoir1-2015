@@ -25,13 +25,25 @@ public class LSystem extends AbstractLSystem {
     /**
      * constructeur vide monte un système avec alphabet vide et sans règles
      */
+    ITurtle schildkrote;
     Map<String, Symbol> alphabet; // Dictionary
-    Map<Symbol, List<Symbol.Seq>>  rules;
+    Map<Symbol, List<String>>  rules;
+    List axiom;
     
     
     public LSystem() {
         alphabet = new HashMap<String, Symbol>();
+        rules = new HashMap<Symbol, List<String>>();
+        schildkrote = new Turtle();
     }
+
+    public LSystem(ITurtle schildkrote) {
+        alphabet = new HashMap<String, Symbol>();
+        rules = new HashMap<Symbol, List<String>>();
+        this.schildkrote = schildkrote;
+        axiom = new ArrayList<Symbol>();
+    }
+    
     
     // Maybe create another class for it
     public static void readJSONFile(String file, LSystem S, Turtle T) throws java.io.IOException {
@@ -64,23 +76,6 @@ public class LSystem extends AbstractLSystem {
             }
         }
     }
-    
-    /* méthodes d'initialisation de système */
-    
-    //public Symbol addSymbol(char sym) {...}
-    //public void addRule(Symbol sym, String expansion) {...}
-    //public void setAction(Symbol sym, String action) {...}
-    //public void setAxiom(String str){...}
-    
-    /* accès aux règles et exécution */
-    //public Symbol.Seq getAxiom(){ ...}
-    //public Symbol.Seq rewrite(Symbol sym) {...}
-    //public void tell(Turtle turtle, Symbol sym) {...}
- 
-    /* opérations avancées */
-    //public Symbol.Seq applyRules(Symbol.Seq seq, int n) {...}
-    /* retourne BoundingBox pour le dessin */
-    //public Rectangle2D tell(Turtle turtle, Symbol.Seq seq, int n){ ...}
 
     @Override
     public Symbol addSymbol(char sym) {
