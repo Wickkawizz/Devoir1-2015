@@ -5,6 +5,7 @@
  */
 package projet1.pkg2015;
 
+import java.awt.geom.Point2D;
 import projet1.pkg2015.Interface.AbstractLSystem;
 import projet1.pkg2015.Interface.ITurtle;
 import projet1.pkg2015.Symbol.Seq;
@@ -93,6 +94,15 @@ public class LSystem extends AbstractLSystem {
             S.actions.putIfAbsent(currentAction, (String) actions.get(currentAction.toString()));
         }
         
+        // Parameters
+        parameters.get("step").toString();
+        parameters.get("angle").toString();
+        parameters.getJSONArray("start");
+        T.setUnits(Double.valueOf(parameters.get("step").toString()), Double.valueOf(parameters.get("angle").toString()));
+        Point2D pos = new Point2D.Double(parameters.getJSONArray("start").getDouble(0), parameters.getJSONArray("start").getDouble(1));
+        T.init(pos, parameters.getJSONArray("start").getDouble(2));
+        
+        
         System.out.println("Fin lecture fichier!");
     }
 
@@ -133,8 +143,8 @@ public class LSystem extends AbstractLSystem {
     }
 
     @Override
-    public /*Symbol.Seq*/List<Symbol> getAxiom() {
-        return /*(Symbol.Seq)*/ axiom;
+    public List<Symbol> getAxiom() {
+        return axiom;
     }
 
     @Override
@@ -211,7 +221,7 @@ public class LSystem extends AbstractLSystem {
                 int index = symbols.indexOf(sym);
                 symbols.remove(sym);// Remove "A"
                 //Rewrite "A" into "AA"   
-                symbols.addAll(index, (List<Symbol>) rewrite(sym));
+                symbols.addAll(index, (List<Symbol>) rewrite(sym)); //possiblement, cela va reecrire l'arbre a l'envers
             }
 
             tell(turtle, seq, n - 1);
@@ -233,9 +243,7 @@ public class LSystem extends AbstractLSystem {
         List<Symbol> symbols = (List) seq;
         for (Symbol symbol : symbols) {
             List<Symbol> t = (List) rewrite(symbol);
-        }
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        */
+        }*/
     }
     
 }

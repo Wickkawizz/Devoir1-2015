@@ -6,6 +6,8 @@
 package projet1.pkg2015;
 
 import java.awt.geom.Point2D;
+import java.io.FileReader;
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,13 +26,14 @@ import javafx.stage.Stage;
 public class Projet1FXMain extends Application {
     
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws IOException {
         Point2D pos = new Point2D.Double(0, 0);
         
         Canvas canvas = new Canvas(1800,900);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
-        LSystem lSystem = new LSystem(new Turtle(5, 30, pos, 90, gc));
+        LSystem lSystem = new LSystem();
+        LSystem.readJSONFile("C:\\Users\\WickkaWizz\\OneDrive\\Desktop\\buisson.JSON", lSystem, (Turtle) lSystem.schildkrote);
         
         /*
         Implement the axiom getter. 
@@ -38,10 +41,12 @@ public class Projet1FXMain extends Application {
         The draw action in the turtle draws in the canvas everytime it is called
         
         */
+        System.out.println(lSystem.getAxiom().get(0));
+        //bug here, cannot cast the symbol.seq for the list. Will need to check
+        lSystem.tell(lSystem.schildkrote, (Symbol.Seq) lSystem.getAxiom(), 0/*lSystem.getAxiom().size()*/);
         
         Group root = new Group();
         
-        gc.strokeLine(0, 0, 0, 0);
         root.getChildren().add(canvas);
         
         Scene scene = new Scene(root, 1800, 900);
