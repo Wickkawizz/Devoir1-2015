@@ -42,6 +42,7 @@ public class Turtle implements ITurtle{
     // TODO: Implement the drawing portion
     @Override
     public void draw() {
+        
         pos.setLocation((pos.getX() + step) * Math.cos(delta),(pos.getY() + step) * Math.sin(delta));
     }
 
