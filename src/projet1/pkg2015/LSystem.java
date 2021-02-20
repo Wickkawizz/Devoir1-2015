@@ -100,7 +100,7 @@ public class LSystem extends AbstractLSystem {
         }
         // if the rule doesnt exist yet, add it
         else{
-            var temp = new ArrayList<Symbol>();
+            List<Symbol> temp = new ArrayList<Symbol>();
             for (char c : expansion.toCharArray()) {
                 temp.add(new Symbol(c));                
             }
