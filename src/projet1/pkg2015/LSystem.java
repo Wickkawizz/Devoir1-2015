@@ -26,6 +26,7 @@ public class LSystem extends AbstractLSystem {
      * constructeur vide monte un système avec alphabet vide et sans règles
      */
     Map<String, Symbol> alphabet; // Dictionary
+    Map<Symbol, List<Symbol.Seq>>  rules;
     
     
     public LSystem() {
@@ -37,7 +38,7 @@ public class LSystem extends AbstractLSystem {
         JSONObject input = new JSONObject(new JSONTokener(new java.io.FileReader(file))); // lecture de fichier JSON avec JSONTokener
         JSONArray alphabet = input.getJSONArray("alphabet");
         
-        JSONArray rules = input.getJSONArray("rules");
+        JSONObject rules = input.getJSONObject("rules");
         
         String axiom = input.getString("axiom");
         S.setAxiom(axiom);
@@ -45,21 +46,21 @@ public class LSystem extends AbstractLSystem {
         for (int i=0; i<alphabet.length(); i++){
             String letter = alphabet.getString(i);
             Symbol sym = S.addSymbol(letter.charAt(0)); // un caractère
-            
         }
         
-        for (int i = 0; i < rules.length(); i++) {
-            JSONArray rulesList = rules.getJSONArray(i);
-            String letter = rules.getString(i);
-            // getting every letter to which there are rules
-            for (int j = 0; j < rulesList.length(); j++) {
-                //if the letter exists in the alphabet, then add the rules to the list
-                if (S.alphabet.containsKey(letter)) {
-                    String rule = rulesList.getString(j);
-                    S.addRule(S.alphabet.get(letter), rule);
-                }
+        
+        // Parsing rules        
+        // Get array of rules
+        JSONArray names = rules.names();
+        for(int i = 0; i < names.length(); i++){
+            // Get current Symbol
+            String symbol = names.getString(i);
 
-                
+            //Get the Symbol's array of rules
+            JSONArray ruleArray = rules.getJSONArray(symbol);
+            for(int j = 0; j < ruleArray.length(); j++){
+                // Add every rules
+                S.addRule(new Symbol(symbol.charAt(0)), ruleArray.getString(j));
             }
         }
     }
