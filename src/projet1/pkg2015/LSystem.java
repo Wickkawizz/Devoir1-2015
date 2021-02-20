@@ -28,11 +28,11 @@ public class LSystem extends AbstractLSystem {
     /**
      * constructeur vide monte un système avec alphabet vide et sans règles
      */
-    ITurtle schildkrote;
     Map<String, Symbol> alphabet; // Dictionary
     Map<Symbol, List<Symbol>> rules;
     Map<Symbol, String> actions;
     List<Symbol> axiom;
+    ITurtle schildkrote;
     
     
     public LSystem() {
@@ -46,8 +46,9 @@ public class LSystem extends AbstractLSystem {
     public LSystem(ITurtle schildkrote) {
         alphabet = new HashMap<String, Symbol>();
         rules = new HashMap<Symbol, List<Symbol>>();
-        this.schildkrote = schildkrote;
+        actions = new HashMap<Symbol, String>();
         axiom = new ArrayList<Symbol>();
+        this.schildkrote = schildkrote;
     }
     
     
@@ -158,11 +159,25 @@ public class LSystem extends AbstractLSystem {
 
     @Override
     public Symbol.Seq applyRules(Symbol.Seq seq, int n) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(n == 0)
+            for (Symbol symbol : seq)
+                tell(schildkrote, symbol);
+        else{
+            // Not sure about this part
+            if(seq.iterator().hasNext())
+                seq.iterator().remove();
+            applyRules(seq, n - 1);
+        }
+
+        return seq; // on return seq??
     }
 
     @Override
-    public Rectangle2D tell(ITurtle turtle, Symbol sym, int rounds) {
+    public Rectangle2D tell(ITurtle turtle, Symbol.Seq seq, int rounds) {
+        List<Symbol> symbols = (List) seq;
+        for (Symbol symbol : symbols) {
+            List<Symbol> t = (List) rewrite(symbol);
+        }
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
