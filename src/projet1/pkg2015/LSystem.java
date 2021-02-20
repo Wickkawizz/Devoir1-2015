@@ -82,6 +82,8 @@ public class LSystem extends AbstractLSystem {
                 S.addRule(new Symbol(symbol.charAt(0)), ruleArray.getString(j));
             }
         }
+        
+        System.out.println("Fin lecture fichier!");
     }
 
     @Override

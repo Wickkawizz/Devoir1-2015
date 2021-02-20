@@ -30,7 +30,8 @@ public class Turtle implements ITurtle{
         this.step = 0.00;
         this.delta = 0.00;
         this.angle_deg = 0.00;
-        pos.setLocation(0.00, 0.00);
+        pos = new Point2D.Double(0.00, 0.00);
+        //pos.setLocation(0.00, 0.00);
     }
 
     public Turtle(double step, double delta, Point2D pos, double angle_deg, GraphicsContext board) {

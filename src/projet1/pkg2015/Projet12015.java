@@ -5,6 +5,8 @@
  */
 package projet1.pkg2015;
 
+import java.io.IOException;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -18,11 +20,17 @@ public class Projet12015 {
     /**
      * @param args the command line arguments
      */
-    /*public static void main(String[] args) {
-      
+    /**/
+	public static void main(String[] args) {
+		try {
+			LSystem.readJSONFile("./src/i.json", new LSystem(), new Turtle());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     
-    public void start(Stage stage){
+    /*public void start(Stage stage){
         //Creating a Group 
       Group root = new Group(); 
          
