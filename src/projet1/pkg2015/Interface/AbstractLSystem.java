@@ -22,6 +22,8 @@ package projet1.pkg2015.Interface;
  */
 
 import java.awt.geom.Rectangle2D;
+import java.util.List;
+
 import projet1.pkg2015.Symbol;
 
 /**
@@ -83,7 +85,7 @@ public abstract class AbstractLSystem
      * Starting sequence.
      * @return starting sequence
      */
-    public abstract Symbol.Seq getAxiom();
+    public abstract /*Symbol.Seq*/List<Symbol> getAxiom();
     /**
      * Applies a symbol's rewriting rule. 
      * If no rule was previously stored with {@link #addRule}, then it returns null. If a single rule 

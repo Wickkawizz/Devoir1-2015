@@ -6,7 +6,7 @@
 package projet1.pkg2015;
 
 import java.io.IOException;
-
+import java.util.List;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -23,7 +23,16 @@ public class Projet12015 {
     /**/
 	public static void main(String[] args) {
 		try {
-			LSystem.readJSONFile("./src/i.json", new LSystem(), new Turtle());
+			LSystem s = new LSystem();
+			Turtle t = new Turtle();
+			LSystem.readJSONFile("./src/i.json", s, t);
+			//LSystem.readJSONFile("./src/i.json", new LSystem(), new Turtle());
+			
+			List<Symbol> symbols = (List<Symbol>) s.getAxiom();
+			for (Symbol sym : symbols) {
+				s.tell(t, sym);
+			}
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

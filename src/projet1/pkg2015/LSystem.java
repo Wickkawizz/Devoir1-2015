@@ -123,8 +123,8 @@ public class LSystem extends AbstractLSystem {
     }
 
     @Override
-    public Symbol.Seq getAxiom() {
-        return (Symbol.Seq) axiom;
+    public /*Symbol.Seq*/List<Symbol> getAxiom() {
+        return /*(Symbol.Seq)*/ axiom;
     }
 
     @Override
