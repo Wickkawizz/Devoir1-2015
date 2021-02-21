@@ -40,6 +40,7 @@ import projet1.pkg2015.Symbol;
  * {@link java.util.Iterator#next() } on the fly.) 
  * 
  * @author Mikl&oacute;s Cs&#369;r&ouml;s
+ * @author Arkapin£
  */
 public abstract class AbstractLSystem 
 {
@@ -85,7 +86,7 @@ public abstract class AbstractLSystem
      * Starting sequence.
      * @return starting sequence
      */
-    public abstract /*Symbol.Seq*/List<Symbol> getAxiom();
+    public abstract List<Symbol> getAxiom();
     /**
      * Applies a symbol's rewriting rule. 
      * If no rule was previously stored with {@link #addRule}, then it returns null. If a single rule 
@@ -95,7 +96,7 @@ public abstract class AbstractLSystem
      * @param sym a symbol that would be rewritten. 
      * @return null if no rule, or one of the applicable rules chosen randomly
      */
-    public abstract Symbol.Seq rewrite(Symbol sym);
+    public abstract List<Symbol> rewrite(Symbol sym);
     /**
      * Executes the action corresponding to a symbol (specified by {@link #setAction}) on a given turtle.  
      * 
@@ -112,7 +113,7 @@ public abstract class AbstractLSystem
      * @param n number of rounds
      * @return sequence obtained after rewriting the entire sequence <var>n</var> times 
      */
-    public abstract Symbol.Seq applyRules(Symbol.Seq seq, int n);
+    public abstract List<Symbol> applyRules(List<Symbol> seq, int n);
     
     /**
      * Draws the result after multiple rounds of rewriting, starting from a single symbol. 
@@ -126,5 +127,5 @@ public abstract class AbstractLSystem
      */
     // **OLD** public abstract Rectangle2D tell(ITurtle turtle, Symbol sym, int rounds);
     // Code changed on github
-    public abstract Rectangle2D tell(ITurtle turtle, Symbol.Seq seq, int rounds);
+    public abstract Rectangle2D tell(ITurtle turtle, List<Symbol> seq, int rounds);
 }

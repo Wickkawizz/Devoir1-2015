@@ -8,12 +8,10 @@ package projet1.pkg2015;
 import java.awt.geom.Point2D;
 import projet1.pkg2015.Interface.AbstractLSystem;
 import projet1.pkg2015.Interface.ITurtle;
-import projet1.pkg2015.Symbol.Seq;
 
 import java.awt.geom.Rectangle2D;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,29 +22,27 @@ import org.json.JSONTokener;
 /**
  *
  * @author WickkaWizz
+ * @author Arkapin£
  */
 public class LSystem extends AbstractLSystem {
-    /**
-     * constructeur vide monte un système avec alphabet vide et sans règles
-     */
-    Map<String, Symbol> alphabet; // Dictionary
-    Map<Symbol, List<Symbol>> rules;
+    Map<Symbol, List<List<Symbol>>> rules;
+    Map<String, Symbol> alphabet;
     Map<Symbol, String> actions;
     List<Symbol> axiom;
     ITurtle schildkrote;
     
     
     public LSystem() {
+        rules = new HashMap<Symbol, List<List<Symbol>>>();
         alphabet = new HashMap<String, Symbol>();
-        rules = new HashMap<Symbol, List<Symbol>>();
         actions = new HashMap<Symbol, String>();
         axiom = new ArrayList<Symbol>();
         schildkrote = new Turtle();
     }
 
     public LSystem(ITurtle schildkrote) {
+        rules = new HashMap<Symbol, List<List<Symbol>>>();
         alphabet = new HashMap<String, Symbol>();
-        rules = new HashMap<Symbol, List<Symbol>>();
         actions = new HashMap<Symbol, String>();
         axiom = new ArrayList<Symbol>();
         this.schildkrote = schildkrote;
@@ -67,7 +63,7 @@ public class LSystem extends AbstractLSystem {
         
         for (int i=0; i<alphabet.length(); i++){
             String letter = alphabet.getString(i);
-            Symbol sym = S.addSymbol(letter.charAt(0)); // un caractère
+            /*Symbol sym =*/ S.addSymbol(letter.charAt(0)); // un caractère
         }
         
         
@@ -115,19 +111,28 @@ public class LSystem extends AbstractLSystem {
 
     @Override
     public void addRule(Symbol sym, String expansion) {
-        List<Symbol> sequence = rules.get(sym);
-        if(sequence != null){
+    	//Fetch current rules for symbol
+    	List<List<Symbol>> currentRules = rules.get(sym);
+        if(currentRules != null){
+        	// If not null, we need to append
+        	// Create new List
+        	List<Symbol> sList = new ArrayList<Symbol>();
             for (char c : expansion.toCharArray()) {
-                sequence.add(new Symbol(c));                
+            	// Fill new list with symbol sequence
+            	sList.add(new Symbol(c));
             }
+            // Add new rule to the list of rules
+            currentRules.add(sList);                
         }
-        // if the rule doesnt exist yet, add it
+        // if the rule doesn't exist yet, add it
         else{
             List<Symbol> temp = new ArrayList<Symbol>();
             for (char c : expansion.toCharArray()) {
                 temp.add(new Symbol(c));                
             }
-            rules.putIfAbsent(sym, temp);
+            List<List<Symbol>> list = new ArrayList<List<Symbol>>();
+            list.add(temp);
+            rules.putIfAbsent(sym, list);
         }
     }
 
@@ -148,30 +153,20 @@ public class LSystem extends AbstractLSystem {
     }
 
     @Override
-    public Symbol.Seq rewrite(Symbol sym) {
+    public List<Symbol> rewrite(Symbol sym) {
         // Find rules
-        List<Symbol> rulesList = rules.get(sym);
+        List<List<Symbol>> rulesList = rules.get(sym);
+        if(rulesList == null)
+        	return null;
         int numberOfRules = rulesList.size();
         
         // Randomly select a rule and return it
         int randomNum = ThreadLocalRandom.current().nextInt(0, numberOfRules);
-        return (Symbol.Seq) rulesList.get(randomNum);
+        return rulesList.get(randomNum);
     }
 
     @Override
     public void tell(ITurtle turtle, Symbol sym) {
-    	/*
-    	for (Map.Entry<Symbol, String> entry : this.actions.entrySet()) {
-			System.out.println(entry.getKey());
-			System.out.println(entry.getValue());
-            System.out.println(entry.getKey().toString().equals(sym.toString()));
-            System.out.println(entry.getKey().toString() + " : " + sym.toString());
-		}
-    	var b = this.actions.containsKey(sym);
-    	var temp = this.actions.containsValue(sym);
-    	var t = this.actions.get(sym);
-    	System.out.println("t = : " + t.toString());
-    	*/
         switch(actions.get(sym)){
             case("draw"): 
                 turtle.draw();
@@ -192,58 +187,56 @@ public class LSystem extends AbstractLSystem {
     }
 
     @Override
-    public Symbol.Seq applyRules(Symbol.Seq seq, int n) {
+    public List<Symbol> applyRules(List<Symbol> symbols, int n) {
         if(n == 0)
-            for (Symbol symbol : seq)
+            for (Symbol symbol : symbols)
                 tell(schildkrote, symbol);
         else{
             // Not sure about this part
-            if(seq.iterator().hasNext())
-                seq.iterator().remove();
-            applyRules(seq, n - 1);
+            if(symbols.iterator().hasNext())
+            	symbols.iterator().remove();
+            applyRules(symbols, n - 1);
         }
 
-        return seq; // on return seq??
+        return symbols;
     }
 
     @Override
-    public Rectangle2D tell(ITurtle turtle, Symbol.Seq seq, int n) {        
+    public Rectangle2D tell(ITurtle turtle, List<Symbol> symbols, int n) {        
         if(n == 0)
-            for (Symbol sym : seq)
+            for (Symbol sym : symbols)
                 tell(turtle, sym);
         else{
-            // Rewrite?
-            //@SuppressWarnings("unchecked")
-            List<Symbol> symbols = (List<Symbol>) seq;
+        	// Can not use foreach here because we modify the List while iterating through it
+            for (int i = 0; i < symbols.size(); i++){
+            	Symbol sym = symbols.get(i);
 
-            for (Symbol sym : seq){
-                // On a "AB"
-                int index = symbols.indexOf(sym);
-                symbols.remove(sym);// Remove "A"
-                //Rewrite "A" into "AA"   
-                symbols.addAll(index, (List<Symbol>) rewrite(sym)); //possiblement, cela va reecrire l'arbre a l'envers
+                List<Symbol> newSymbols = rewrite(sym);
+                if(newSymbols != null) {
+                	symbols.remove(i);// Remove only if the rewrite method returned an expression
+                	symbols.addAll(i, newSymbols); //possiblement, cela va reecrire l'arbre a l'envers
+                	
+                	// Adjust index value
+                	i += newSymbols.size() - 1;
+                }
+                
             }
 
-            tell(turtle, seq, n - 1);
+            tell(turtle, symbols, n - 1);
         }
 
-
-        seq = applyRules(seq, n);
-        for (Symbol sym : seq) {
+        //?
+        /*symbols = applyRules(symbols, n);
+        for (Symbol sym : symbols) {
             tell(turtle, sym);
-        }
-        //turtle.getPosition().
+        }*/
+
         return new Rectangle2D.Double(
             0, 
             0, 
             turtle.getPosition().getX(), 
             turtle.getPosition().getY()
         );
-        /*
-        List<Symbol> symbols = (List) seq;
-        for (Symbol symbol : symbols) {
-            List<Symbol> t = (List) rewrite(symbol);
-        }*/
     }
     
 }

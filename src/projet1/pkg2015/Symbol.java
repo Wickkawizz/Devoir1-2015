@@ -6,14 +6,11 @@
 package projet1.pkg2015;
 
 /**
- *
- * @author WickkaWizz
- */
-
-/**
  * Symbol in an L-system's alphabet. 
  * 
  * @author Mikl&oacute;s Cs&#369;r&ouml;s
+ * @author WickkaWizz
+ * @author Arkapin£
  */
 public class Symbol
 {
