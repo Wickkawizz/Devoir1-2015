@@ -95,6 +95,7 @@ public class LSystem extends AbstractLSystem {
         parameters.get("angle").toString();
         parameters.getJSONArray("start");
         T.setUnits(Double.valueOf(parameters.get("step").toString()), Double.valueOf(parameters.get("angle").toString()));
+        System.out.println(T.step);
         Point2D pos = new Point2D.Double(parameters.getJSONArray("start").getDouble(0), parameters.getJSONArray("start").getDouble(1));
         T.init(pos, parameters.getJSONArray("start").getDouble(2));
         
@@ -170,18 +171,25 @@ public class LSystem extends AbstractLSystem {
         switch(actions.get(sym)){
             case("draw"): 
                 turtle.draw();
+                //System.out.println("I drew");
                 break;
             case("push"):
                 turtle.push();
+                //System.out.println("I pushed");
                 break;
             case("pop"):
                 turtle.pop();
+                //System.out.println("I popped");
                 break;
             case("turnL"):
-                turtle.turnL();
+                //turtle.turnL();
+                turtle.turnR();
+                //System.out.println("I TurnL");
                 break;
             case("turnR"):
-                turtle.turnR();
+                //turtle.turnR();
+                turtle.turnL();
+                //System.out.println("I TurnR");
                 break;
         }
     }

@@ -19,7 +19,7 @@ public class Projet12015 {
      * @param args the command line arguments
      */
     /**/
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		try {
 			LSystem s = new LSystem();
 			Turtle t = new Turtle();
@@ -35,7 +35,7 @@ public class Projet12015 {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    }
+    }*/
     
     /*public void start(Stage stage){
         //Creating a Group 

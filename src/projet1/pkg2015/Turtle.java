@@ -34,22 +34,12 @@ public class Turtle implements ITurtle{
         this.delta = 0.00;
         this.angle_deg = 0.00;
         pos = new Point2D.Double(0.00, 0.00);
-        //pos.setLocation(0.00, 0.00);
-        
-        // Temporary stuff for testing
-        Canvas canvas = new Canvas(300, 250);
-        gc = canvas.getGraphicsContext2D();
     }
 
     public Turtle(double step, double delta, Point2D pos, double angle_deg, GraphicsContext board) {
         setUnits(step, delta);
         stack = new Stack<>();
         init(pos, angle_deg);
-        setDrawingBoard(board);
-
-        // Temporary stuff for testing
-        Canvas canvas = new Canvas(300, 250);
-        gc = canvas.getGraphicsContext2D();
     }
     
     // Move with drawing
@@ -57,16 +47,18 @@ public class Turtle implements ITurtle{
     public void draw() {
         double x1 = pos.getX();
         double y1 = pos.getY();
+        System.out.println(x1+ ", " + y1);
         move();// Possibly the reference won't get updated and will need to be stored in a seperate variable.
         double x2 = pos.getX();
         double y2 = pos.getY();
         gc.strokeLine(x1, y1, x2, y2);
+        //System.out.println("I Drew");
     }
 
     // Move without drawing
     @Override
     public void move() {
-        pos.setLocation((pos.getX() + step) * Math.cos(delta),(pos.getY() + step) * Math.sin(delta));
+        pos.setLocation((pos.getX() + step) * Math.cos(angle_deg),(pos.getY() + step) * Math.sin(angle_deg));
     }
 
     @Override
@@ -84,6 +76,7 @@ public class Turtle implements ITurtle{
         stack.push(pos.getX());
         stack.push(pos.getY());
         stack.push(angle_deg);
+        //System.out.println(stack);
     }
 
     @Override
@@ -126,4 +119,9 @@ public class Turtle implements ITurtle{
     public void setDrawingBoard(GraphicsContext board){
         this.gc = board;
     }
+
+    public void setPos(Point2D pos) {
+        this.pos = pos;
+    }
+    
 }

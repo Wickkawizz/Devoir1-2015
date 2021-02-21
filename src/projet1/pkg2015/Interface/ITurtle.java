@@ -22,6 +22,7 @@ package projet1.pkg2015.Interface;
  */
 
 import java.awt.geom.Point2D;
+import javafx.scene.canvas.GraphicsContext;
 /**
  * Turtle graphics interface. The turtle state is defined as its 
  * location on the plane and the orientation of its nose. 
@@ -88,4 +89,7 @@ public interface ITurtle
      * @param delta unit angle change in degrees (for turnR and turnL)
      */
     public void setUnits(double step, double delta);
+
+    public void setDrawingBoard(GraphicsContext board);
+    public void setPos(Point2D pos);
 }
