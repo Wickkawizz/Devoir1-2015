@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projet1.pkg2015;
 
 import java.awt.geom.Point2D;
@@ -63,7 +58,7 @@ public class LSystem extends AbstractLSystem {
         
         for (int i=0; i<alphabet.length(); i++){
             String letter = alphabet.getString(i);
-            /*Symbol sym =*/ S.addSymbol(letter.charAt(0)); // un caractère
+            S.addSymbol(letter.charAt(0));
         }
         
         
@@ -92,12 +87,9 @@ public class LSystem extends AbstractLSystem {
         
         // Parameters
         T.setUnits(Double.valueOf(parameters.get("step").toString()), Double.valueOf(parameters.get("angle").toString()));
-        //System.out.println(T.step);
+        
         Point2D pos = new Point2D.Double(parameters.getJSONArray("start").getDouble(0), parameters.getJSONArray("start").getDouble(1));
         T.init(pos, parameters.getJSONArray("start").getDouble(2));
-        
-        
-        //System.out.println("Fin lecture fichier!");
     }
 
     @Override
@@ -168,25 +160,18 @@ public class LSystem extends AbstractLSystem {
         switch(actions.get(sym)){
             case("draw"): 
                 turtle.draw();
-                //System.out.println("I drew");
                 break;
             case("push"):
                 turtle.push();
-                //System.out.println("I pushed");
                 break;
             case("pop"):
                 turtle.pop();
-                //System.out.println("I popped");
                 break;
             case("turnL"):
-                //turtle.turnL();
-                turtle.turnR();
-                //System.out.println("I TurnL");
+                turtle.turnL();
                 break;
             case("turnR"):
-                //turtle.turnR();
-                turtle.turnL();
-                //System.out.println("I TurnR");
+                turtle.turnR();
                 break;
         }
     }
@@ -197,7 +182,6 @@ public class LSystem extends AbstractLSystem {
             for (Symbol symbol : symbols)
                 tell(schildkrote, symbol);
         else{
-            // Not sure about this part
             if(symbols.iterator().hasNext())
             	symbols.iterator().remove();
             applyRules(symbols, n - 1);
@@ -219,7 +203,7 @@ public class LSystem extends AbstractLSystem {
                 List<Symbol> newSymbols = rewrite(sym);
                 if(newSymbols != null) {
                 	symbols.remove(i);// Remove only if the rewrite method returned an expression
-                	symbols.addAll(i, newSymbols); //possiblement, cela va reecrire l'arbre a l'envers
+                	symbols.addAll(i, newSymbols);
                 	
                 	// Adjust index value
                 	i += newSymbols.size() - 1;

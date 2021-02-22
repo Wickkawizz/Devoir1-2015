@@ -1,18 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package projet1.pkg2015;
 
 import projet1.pkg2015.Interface.ITurtle;
 
 import java.awt.geom.Point2D;
-import java.util.List;
 import java.util.Stack;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.shape.Line;
 
 /**
  *
@@ -46,26 +38,23 @@ public class Turtle implements ITurtle{
     public void draw() {
         double x1 = pos.getX();
         double y1 = pos.getY();
-        //System.out.println(x1+ ", " + y1);
-        move();// Possibly the reference won't get updated and will need to be stored in a seperate variable.
+
+        move();
         double x2 = pos.getX();
         double y2 = pos.getY();
-        
+
+		// Postscript output
     	System.out.println(x1 + " " + y1 + " lineto");
         gc.strokeLine(x1, y1, x2, y2);
-        
-        //System.out.println("x1 : " + x1 + "\nx2 : " + x2 + "\ny1 : " + y1 + "\ny2 : " + y2);
-        //System.out.println("I Drew");
     }
 
     // Move without drawing
     @Override
     public void move() {
-    	//System.out.println("new x : " + (pos.getX() + (step * Math.cos(Math.toRadians(angle_deg)))));
-    	//System.out.println("old y = " + pos.getY());
-    	//System.out.println("new y : " + (pos.getY() + (step * Math.sin(Math.toRadians(angle_deg)))));
     	double y = pos.getY() + step * Math.sin(Math.toRadians(angle_deg));
     	double x = pos.getX() + step * Math.cos(Math.toRadians(angle_deg));
+
+		// Postscript output
     	System.out.println(x + " " + y + " moveto");
         pos.setLocation(x, y);
     }
@@ -83,13 +72,11 @@ public class Turtle implements ITurtle{
     @Override
     public void push() {
         stack.push(pos.getX());
-    	//System.out.println("x : " + pos.getX() );
-    	//System.out.println("y : " + pos.getY() );
-    	//System.out.println("agnle : " + angle_deg );
         stack.push(pos.getY());
         stack.push(angle_deg);
+        
+		// Postscript output
         System.out.println("currentpoint stroke newpath moveto");
-        //System.out.println(stack);
     }
 
     @Override
@@ -98,6 +85,8 @@ public class Turtle implements ITurtle{
         double y = stack.pop();
         double x = stack.pop();
         pos.setLocation(x, y);
+        
+		// Postscript output
         System.out.println("stroke " + x + " " + y + " newpath moveto");
     }
 
@@ -112,6 +101,8 @@ public class Turtle implements ITurtle{
         this.pos = pos;
         this.angle_deg = angle_deg;
         this.stack.clear();
+
+		// Postscript output
         System.out.println("%!PS-Adobe-3.0 EPSF-3.0");
         System.out.println("%%BoundingBox (attend)");
         System.out.println("newpath " + pos.getX() + " " + pos.getY() + " moveto");
