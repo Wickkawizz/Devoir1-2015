@@ -7,6 +7,7 @@ package projet1.pkg2015;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Point2D.Double;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -30,16 +31,16 @@ public class Projet1FXMain extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Canvas canvas = new Canvas(1600,800);
-        //Point2D pos = new Point2D.Double(canvas.getWidth()/2, canvas.getHeight()/2); pas senser utiliser ca, 
+        //Point2D pos = new Point2D.Double(0, 0);// pas senser utiliser ca, 
         //car le fichier json le donne en parametre. C'est normal de commencer en haut, mais pas normal de dessiner en dehors
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
-        LSystem lSystem = new LSystem();
-        //lSystem.schildkrote.setPos(pos);
         
         if(args.length >= 2) {
-            String path = args[0];//"./src/json/i.json";
-            int n = Integer.parseInt(args[1]);//1; 
+            String path = /*args[0];*/"./src/json/i.json";
+            int n = /*Integer.parseInt(args[1]);*/4; 
+            LSystem lSystem = new LSystem();
+            //lSystem.schildkrote.setPos(pos);
             lSystem.schildkrote.setDrawingBoard(gc);
         	LSystem.readJSONFile(path, lSystem, (Turtle) lSystem.schildkrote);
         	/*
@@ -48,19 +49,17 @@ public class Projet1FXMain extends Application {
 		        The draw action in the turtle draws in the canvas everytime it is called
         
         	 */
-        	System.out.println(lSystem.getAxiom().get(0));
-        	lSystem.tell(lSystem.schildkrote, lSystem.getAxiom(), n);
+    		Rectangle2D boundingBox = lSystem.tell(lSystem.schildkrote, lSystem.getAxiom(), n);
                 //canvas.setWidth(rect.getBounds2D().getMaxX() - rect.getBounds().getMinX());
                 //canvas.setHeight(rect.getBounds2D().getMaxY()- rect.getBounds().getMinY());
                 //System.out.println(rect.getBounds2D().getMaxX() - rect.getMinX());
-        	
+			System.out.println("stroke");
+            System.out.println("%%Trailer");
                 
         	Group root = new Group();
-                VBox vbox = new VBox();
-                root.getChildren().add(canvas);
-                vbox.setAlignment(Pos.CENTER);
+            root.getChildren().add(canvas);
         	
-        	Scene scene = new Scene(vbox, 1800, 900);
+        	Scene scene = new Scene(/*vbox*/root, 1600, 800);
         	
         	primaryStage.setTitle("Lindenmayer system");
         	primaryStage.setScene(scene);

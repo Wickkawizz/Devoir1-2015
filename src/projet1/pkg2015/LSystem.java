@@ -91,16 +91,13 @@ public class LSystem extends AbstractLSystem {
         }
         
         // Parameters
-        parameters.get("step").toString();
-        parameters.get("angle").toString();
-        parameters.getJSONArray("start");
         T.setUnits(Double.valueOf(parameters.get("step").toString()), Double.valueOf(parameters.get("angle").toString()));
-        System.out.println(T.step);
+        //System.out.println(T.step);
         Point2D pos = new Point2D.Double(parameters.getJSONArray("start").getDouble(0), parameters.getJSONArray("start").getDouble(1));
         T.init(pos, parameters.getJSONArray("start").getDouble(2));
         
         
-        System.out.println("Fin lecture fichier!");
+        //System.out.println("Fin lecture fichier!");
     }
 
     @Override
@@ -232,12 +229,6 @@ public class LSystem extends AbstractLSystem {
 
             tell(turtle, symbols, n - 1);
         }
-
-        //?
-        /*symbols = applyRules(symbols, n);
-        for (Symbol sym : symbols) {
-            tell(turtle, sym);
-        }*/
 
         return new Rectangle2D.Double(
             0, 
