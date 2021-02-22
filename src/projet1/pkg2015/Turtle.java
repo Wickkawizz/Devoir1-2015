@@ -104,7 +104,7 @@ public class Turtle implements ITurtle{
 
 		// Postscript output
         System.out.println("%!PS-Adobe-3.0 EPSF-3.0");
-        System.out.println("%%BoundingBox (attend)");
+        System.out.println("%%BoundingBox (atend)");
         System.out.println("newpath " + pos.getX() + " " + pos.getY() + " moveto");
     }
 
