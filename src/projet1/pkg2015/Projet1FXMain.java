@@ -21,7 +21,7 @@ public class Projet1FXMain extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Canvas canvas = new Canvas(4000, 4000); // would need to compute canvas size based on window's size
-        GraphicsContext gc = canvas.getGraphicsContext2D();        
+        GraphicsContext gc = canvas.getGraphicsContext2D();
         
         if(args.length >= 2) {
         	// Pars args
